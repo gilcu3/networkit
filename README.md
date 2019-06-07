@@ -169,10 +169,28 @@ By default, [CMake] creates a symlink to the source tree inside your build direc
 
 	g++ -o LibDemo -std=c++11 -I/path/to/build/directory/include -L/path/to/build/directory LibDemo.cpp -lnetworkit -fopenmp
 
+## Known Issues
+- Mac OS X 10.10 "Yosemite": Some users have reported compilation problems on Yosemite with g++ 4.9. The compiler errors mention register problems.
+  While the exact reason remains unclear, the actual issue seems to be that the compiler tries to perform a dual architecture build.
+  Fix: Enforce a 64-bit build by prepending `ARCHFLAGS="-arch x86_64"` to your setup/pip command, e.g. as in
+  `sudo ARCHFLAGS="-arch x86_64" python3 setup.py build_ext --inplace -j4` or `sudo ARCHFLAGS="-arch x86_64" pip3 install networkit`.
+- NetworKit has not yet been successfully built on __Windows__. This is partially due to the fact that Windows ships without a C++ compiler which is necessary to build the Python extensions. Even with the Visual C++ Redistributable our attempts were not successful. Any help is appreciated. It may be possible to build NetworKit as a library on Windows in environments like MinGW or Cygwin.
+
+## Contributions
+
+We encourage contributions to the NetworKit source code. For support please contact the [mailing list][list] or open issues in this GitHub repository.
+
+### Contribution Guidelines
+
+- Properly rebase your commits on the development branch before posting or updating a PR. Force push to feature branches of your fork to update PRs. We prefer a linear history. Do not merge from development branches into feature branches/PRs for no good reason.
+- Adapt to the existing naming conventions. NetworKit generally uses lowerCamelCase for (global and local) variables and 
+UpperCamelCase for classes.
+- We use 4 space indentation.
+- Provide tests for new code or modified behavior.
+
 ### Unit tests
 
-You actually don't need to build and run our unit tests.
-However if you experience any issues with NetworKit, you might want to check, if NetworKit runs properly.
+NetworKit comes with a large suite of unit tests.
 The unit tests can only be run from a clone or copy of the repository and not from a pip installation.
 In order to run the unit tests, you need to compile them first.
 This is done by setting the [CMake] `NETWORKI_BUILD_TESTS` flag to `ON`:
@@ -187,21 +205,10 @@ Single tests can be executed with:
 Additionally, one can specify the level of the logs outputs by adding `--loglevel=<log_level>`;
 supported log levels are: `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`, and `FATAL`.
 
-## Known Issues
-- Mac OS X 10.10 "Yosemite": Some users have reported compilation problems on Yosemite with g++ 4.9. The compiler errors mention register problems.
-  While the exact reason remains unclear, the actual issue seems to be that the compiler tries to perform a dual architecture build.
-  Fix: Enforce a 64-bit build by prepending `ARCHFLAGS="-arch x86_64"` to your setup/pip command, e.g. as in
-  `sudo ARCHFLAGS="-arch x86_64" python3 setup.py build_ext --inplace -j4` or `sudo ARCHFLAGS="-arch x86_64" pip3 install networkit`.
-- NetworKit has not yet been successfully built on __Windows__. This is partially due to the fact that Windows ships without a C++ compiler which is necessary to build the Python extensions. Even with the Visual C++ Redistributable our attempts were not successful. Any help is appreciated. It may be possible to build NetworKit as a library on Windows in environments like MinGW or Cygwin.
-
-## Contributions
-
-We would like to encourage contributions to the NetworKit source code. See the development guide (`DevGuide.mdown`) for instructions. For support please contact the [mailing list][list].
-
-
 ## Credits
 
 List of contributors can be found on the [NetworKit website credits page](https://networkit.github.io/credits.html).
+If you feel that you are missing from the list, post a PR against the [NetworKit website repository](https://github.com/networkit/networkit-website).
 
 ### External Code
 
